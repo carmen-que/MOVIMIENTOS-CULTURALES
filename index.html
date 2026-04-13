@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art-Odyssey: Movimientos Culturales y Artísticos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+
+        :root {
+            --primary: #fbbf24;
+            --bg-dark: #0f172a;
+            --tv-blue: #1e3a8a;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            color: #f8fafc;
+            scroll-behavior: smooth;
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .tv-border {
+            border: 4px solid var(--primary);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .animate-pop { animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+        .option-btn {
+            background: linear-gradient(90deg, #1e3a8a 0%, #1e40af 100%);
+            border: 2px solid #3b82f6;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: #3b82f6;
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+
+        .option-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .correct { background: #16a34a !important; border-color: #22c55e !important; }
+        .incorrect { background: #dc2626 !important; border-color: #ef4444 !important; }
+        
+        .artwork-item {
+            background: rgba(255,255,255,0.05);
+            border-left: 3px solid var(--primary);
+            padding: 10px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Navegación Estilo TV -->
+    <nav class="sticky top-0 z-50 bg-blue-900/90 backdrop-blur-md border-b-4 border-amber-500 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl md:text-3xl font-serif italic text-amber-400 drop-shadow-lg">ART-ODYSSEY TV</h1>
+            <div class="flex items-center gap-6">
+                <div id="lives-container" class="flex gap-2 text-2xl">
+                    <span>❤️</span><span>❤️</span><span>❤️</span>
+                </div>
+                <div id="xp-counter" class="bg-amber-500 text-blue-950 px-4 py-1 rounded-full font-bold shadow-lg">
+                    0 Puntos
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto p-6">
+        
+        <!-- VISTA: EXPLORACIÓN -->
+        <section id="explore-view" class="space-y-12">
+            <header class="text-center py-10">
+                <h2 class="text-4xl md:text-6xl font-serif mb-4 uppercase text-white drop-shadow-md">Movimientos culturales y artísticos</h2>
+                <p class="text-blue-200 max-w-2xl mx-auto text-lg italic">"El arte no es lo que ves, sino lo que haces que otros vean."</p>
+                <div class="mt-8 flex justify-center gap-4">
+                     <button onclick="changeView('quiz')" class="bg-amber-500 hover:bg-amber-400 text-blue-950 px-8 py-3 rounded-full font-black text-xl shadow-xl transition-all hover:-translate-y-1">¡INICIAR EL DESAFÍO!</button>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="movements-grid"></div>
+        </section>
+
+        <!-- VISTA: QUIZ -->
+        <section id="quiz-view" class="hidden max-w-4xl mx-auto py-12">
+            <div class="glass-card tv-border p-8 rounded-3xl text-center relative overflow-hidden">
+                <div id="quiz-intro">
+                    <h2 class="text-5xl font-serif mb-6 text-amber-400">Gran Concurso Cultural</h2>
+                    <p class="text-xl mb-8 text-blue-100 italic">"Demuestra tu dominio sobre las claves formales y teóricas del arte contemporáneo."</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <div class="bg-blue-900/50 p-4 rounded-xl border border-blue-400/30">
+                            <span class="block text-3xl">🔄</span>
+                            <span class="font-bold uppercase text-[10px] tracking-widest">Temario Aleatorio</span>
+                        </div>
+                        <div class="bg-blue-900/50 p-4 rounded-xl border border-blue-400/30">
+                            <span class="block text-3xl">❤️</span>
+                            <span class="font-bold uppercase text-[10px] tracking-widest">3 Intentos</span>
+                        </div>
+                        <div class="bg-blue-900/50 p-4 rounded-xl border border-blue-400/30">
+                            <span class="block text-3xl">🏆</span>
+                            <span class="font-bold uppercase text-[10px] tracking-widest">Nivel Experto</span>
+                        </div>
+                    </div>
+                    <button onclick="startQuiz()" class="bg-amber-500 hover:bg-amber-400 text-blue-950 px-12 py-4 rounded-full font-black text-2xl shadow-2xl transition-all transform hover:scale-110 uppercase">
+                        ¡QUE EMPIECE EL SHOW!
+                    </button>
+                </div>
+
+                <div id="quiz-container" class="hidden text-center relative z-10">
+                    <div class="flex justify-between items-center mb-8">
+                        <span id="question-count" class="bg-blue-800 px-4 py-1 rounded text-sm font-bold border border-blue-400 text-blue-200 uppercase tracking-widest">Pregunta 1/10</span>
+                        <div class="flex gap-2">
+                            <button id="joker-50" onclick="useJoker50()" class="bg-purple-600 hover:bg-purple-500 px-3 py-1 rounded-lg text-xs font-bold border-b-4 border-purple-800 active:border-b-0">50:50</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-950/80 p-6 rounded-2xl mb-8 border-x-4 border-amber-500">
+                        <h3 id="question-text" class="text-2xl md:text-3xl font-bold leading-tight"></h3>
+                    </div>
+
+                    <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                    <div id="feedback-msg" class="mt-8 text-2xl font-black uppercase tracking-tighter hidden animate-pop"></div>
+                </div>
+
+                <div id="quiz-result" class="hidden">
+                    <h2 class="text-6xl font-serif mb-4 text-amber-400" id="result-title"></h2>
+                    <p class="text-2xl mb-8" id="result-text"></p>
+                    <button onclick="changeView('explore')" class="bg-white/10 hover:bg-white/20 border border-white/20 px-8 py-3 rounded-full mr-4">REPASAR CLAVES</button>
+                    <button onclick="startQuiz()" class="bg-amber-500 text-blue-950 px-8 py-3 rounded-full font-bold">REINTENTAR</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div id="info-modal" class="fixed inset-0 bg-black/95 z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-t-4 border-amber-500 max-w-4xl w-full max-h-[90vh] overflow-y-auto rounded-b-3xl p-8 relative shadow-2xl">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-3xl font-bold">&times;</button>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <script>
+        const movements = [
+            { 
+                id: 'eaa', 
+                title: 'Expresionismo Abstracto', 
+                context: 'Años 40-50, Nueva York. Guerra Fría.', 
+                desc: 'Se centra en la expresión de las emociones y la subjetividad a través de formas abstractas y gestos espontáneos sobre el lienzo.', 
+                keys: ['Action Painting', 'Color Field', 'All-over', 'Automatismo'], 
+                artists: 'Jackson Pollock, Mark Rothko, Barnett Newman.', 
+                works: [
+                    { title: 'Autumn Rhythm (Number 30)', artist: 'Jackson Pollock', date: '1950' },
+                    { title: 'White Center', artist: 'Mark Rothko', date: '1950' },
+                    { title: 'Vir Heroicus Sublimis', artist: 'Barnett Newman', date: '1950-51' }
+                ] 
+            },
+            { 
+                id: 'pop', 
+                title: 'Pop Art y Neopop', 
+                context: 'Años 60. Sociedad de consumo.', 
+                desc: 'Utiliza imágenes de la cultura popular y los medios de comunicación de masas para cuestionar los valores de la sociedad de consumo.', 
+                keys: ['Consumismo', 'Serigrafía', 'Kitsch', 'Cultura de masas'], 
+                artists: 'Andy Warhol, Roy Lichtenstein, Richard Hamilton.', 
+                works: [
+                    { title: 'Díptico de Marilyn', artist: 'Andy Warhol', date: '1962' },
+                    { title: 'Whaam!', artist: 'Roy Lichtenstein', date: '1963' },
+                    { title: '¿Qué es lo que hace a los hogares de hoy tan diferentes...?', artist: 'Richard Hamilton', date: '1956' }
+                ] 
+            },
+            { 
+                id: 'inf', 
+                title: 'Informalismo Europeo', 
+                context: 'Años 50. Postguerra y Existencialismo.', 
+                desc: 'Busca romper con las formas tradicionales mediante el uso de materiales diversos y texturas que enfatizan la libertad creativa del artista.', 
+                keys: ['Materia', 'Art Brut', 'Existencialismo'], 
+                artists: 'Antoni Tàpies, Alberto Burri.', 
+                works: [
+                    { title: 'Gran pintura gris', artist: 'Antoni Tàpies', date: '1955' },
+                    { title: 'Sacco e Rosso', artist: 'Alberto Burri', date: '1954' }
+                ] 
+            },
+            { 
+                id: 'hip', 
+                title: 'Hiperrealismo', 
+                context: 'Finales de los 60 e inicios de los 70.', 
+                desc: 'Se esfuerza por representar la realidad con una precisión casi fotográfica, eliminando cualquier rastro de la pincelada del artista.', 
+                keys: ['Nitidez total', 'Mimesis fotográfica', 'Objetividad', 'Ventanales'], 
+                artists: 'Antonio López, Richard Estes, Chuck Close.', 
+                works: [
+                    { title: 'La Gran Vía', artist: 'Antonio López', date: '1974-81' },
+                    { title: 'Telephone Booths', artist: 'Richard Estes', date: '1968' },
+                    { title: 'Big Self-Portrait', artist: 'Chuck Close', date: '1967-68' }
+                ] 
+            },
+            { 
+                id: 'min', 
+                title: 'Minimalismo', 
+                context: 'Años 60, Estados Unidos.', 
+                desc: 'Propone la reducción de las formas a sus elementos más básicos, evitando cualquier adorno o significado emocional subjetivo.', 
+                keys: ['Geometría pura', 'Serialización', 'Literalidad', 'Estructuras primarias'], 
+                artists: 'Donald Judd, Robert Morris, Dan Flavin.', 
+                works: [
+                    { title: 'Untitled (Stacks)', artist: 'Donald Judd', date: '1967' },
+                    { title: 'Untitled (L-Beams)', artist: 'Robert Morris', date: '1965' },
+                    { title: 'The Diagonal of May 25', artist: 'Dan Flavin', date: '1963' }
+                ] 
+            },
+            { 
+                id: 'con', 
+                title: 'Arte Conceptual', 
+                context: 'Años 60-70. Crítica institucional.', 
+                desc: 'Sostiene que la idea o el concepto detrás de la obra es más importante que el objeto artístico final o su apariencia visual.', 
+                keys: ['Desmaterialización', 'Idea como máquina', 'Documentación', 'Lingüística'], 
+                artists: 'Joseph Kosuth, Sol LeWitt, Marcel Broodthaers.', 
+                works: [
+                    { title: 'One and Three Chairs', artist: 'Joseph Kosuth', date: '1965' },
+                    { title: 'Wall Drawings', artist: 'Sol LeWitt', date: '1968' },
+                    { title: 'I Will Not Make Any More Boring Art', artist: 'John Baldessari', date: '1971' }
+                ] 
+            },
+            { 
+                id: 'acc', 
+                title: 'Arte de Acción', 
+                context: 'Desde finales de los 50.', 
+                desc: 'Pone el foco en el acto creativo en sí mismo, a menudo involucrando el cuerpo del artista o la participación directa del público.', 
+                keys: ['Performance', 'Happening', 'Body Art', 'Fluxus'], 
+                artists: 'Joseph Beuys, Marina Abramovic, Allan Kaprow.', 
+                works: [
+                    { title: 'I like America and America likes me', artist: 'Joseph Beuys', date: '1974' },
+                    { title: 'Rhythm 0', artist: 'Marina Abramovic', date: '1974' },
+                    { title: 'Yard', artist: 'Allan Kaprow', date: '1961' }
+                ] 
+            }
+        ];
+
+        // Preguntas basadas estrictamente en la información de las fichas de movimientos
+        const masterQuestions = [
+            { q: "¿Qué movimiento prioriza la expresión de emociones a través de gestos espontáneos sobre el lienzo?", o: ["Minimalismo", "Expresionismo Abstracto", "Hiperrealismo", "Pop Art"], a: 1 },
+            { q: "¿Cuál es una de las obras representativas de Jackson Pollock?", o: ["White Center", "Díptico de Marilyn", "Autumn Rhythm (Number 30)", "One and Three Chairs"], a: 2 },
+            { q: "¿Qué técnica de reproducción serializada utilizó el Pop Art para cuestionar el consumo?", o: ["Pintura al óleo", "Escultura en mármol", "Serigrafía", "Dripping"], a: 2 },
+            { q: "¿En qué movimiento se utiliza la fotografía como mediador para lograr nitidez total?", o: ["Arte Conceptual", "Informalismo", "Hiperrealismo", "Minimalismo"], a: 2 },
+            { q: "¿Qué artista español destaca en el Informalismo por el uso de materiales diversos y texturas?", o: ["Andy Warhol", "Antoni Tàpies", "Donald Judd", "Sol LeWitt"], a: 1 },
+            { q: "¿Qué corriente artística defiende que la idea es más importante que la apariencia visual de la obra?", o: ["Arte Conceptual", "Arte de Acción", "Pop Art", "Expresionismo Abstracto"], a: 0 },
+            { q: "¿Qué movimiento propone reducir las formas a sus elementos más básicos sin significado emocional?", o: ["Informalismo", "Minimalismo", "Hiperrealismo", "Expresionismo Abstracto"], a: 1 },
+            { q: "¿En qué disciplina artística se convierte el cuerpo del artista en el soporte de la obra?", o: ["Performance", "Minimalismo", "Pop Art", "Action Painting"], a: 0 },
+            { q: "¿Cuál es una clave formal del Minimalismo?", o: ["Dripping", "Geometría pura", "Kitsch", "Desmaterialización"], a: 1 },
+            { q: "¿Quién es el autor de la obra 'Díptico de Marilyn'?", o: ["Richard Estes", "Andy Warhol", "Marcel Broodthaers", "Allan Kaprow"], a: 1 },
+            { q: "¿Qué movimiento artístico está ligado al contexto de la Guerra Fría en Nueva York?", o: ["Hiperrealismo", "Informalismo", "Expresionismo Abstracto", "Pop Art"], a: 2 },
+            { q: "¿Qué término se usa para describir el enfoque del Arte de Acción en el acto creativo?", o: ["Serialización", "Happening", "Mimesis fotográfica", "All-over"], a: 1 },
+            { q: "¿Cuál de estos artistas pertenece al movimiento de Arte Conceptual?", o: ["Mark Rothko", "Joseph Kosuth", "Antonio López", "Alberto Burri"], a: 1 },
+            { q: "¿Qué movimiento utiliza la 'Literalidad' como una de sus claves formales?", o: ["Pop Art", "Minimalismo", "Informalismo", "Arte Conceptual"], a: 1 }
+        ];
+
+        let currentXP = 0;
+        let gameQuestions = [];
+        let currentQuestionIdx = 0;
+        let lives = 3;
+        let score = 0;
+        let jokerUsed = false;
+        let canAnswer = true;
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function renderMovements() {
+            const grid = document.getElementById('movements-grid');
+            grid.innerHTML = movements.map((m) => `
+                <div class="glass-card p-6 rounded-2xl animate-fade flex flex-col justify-between h-full">
+                    <div>
+                        <h3 class="text-xl font-bold mb-3 text-amber-400 uppercase leading-tight">${m.title}</h3>
+                        <p class="text-blue-100/70 text-sm mb-6 leading-relaxed italic">${m.desc}</p>
+                    </div>
+                    <button onclick="openMovement('${m.id}')" class="w-full py-2 bg-white/10 border border-white/20 rounded-lg text-white hover:bg-amber-500 hover:text-blue-950 transition-all font-bold text-xs uppercase tracking-widest">
+                        ABRIR DOSSIER TÉCNICO
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function openMovement(id) {
+            const m = movements.find(x => x.id === id);
+            const content = document.getElementById('modal-content');
+            content.innerHTML = `
+                <h2 class="text-4xl font-serif text-amber-400 mb-6 text-center">${m.title}</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="bg-blue-900/40 p-4 rounded-xl mb-6">
+                            <h4 class="text-amber-500 font-bold uppercase text-[10px] tracking-widest mb-1">Contexto Histórico</h4>
+                            <p class="text-sm">${m.context}</p>
+                        </div>
+                        <h4 class="text-amber-500 font-bold uppercase text-[10px] tracking-widest mb-3">🖼️ OBRAS REPRESENTATIVAS</h4>
+                        ${m.works.map(w => `<div class="artwork-item">
+                            <span class="block font-bold text-white">${w.title} (${w.date})</span>
+                            <span class="text-xs text-amber-400 italic">${w.artist}</span>
+                        </div>`).join('')}
+                    </div>
+                    <div class="bg-white/5 p-6 rounded-2xl">
+                        <h4 class="text-amber-500 font-bold uppercase text-[10px] tracking-widest mb-2 border-b border-white/10 pb-1">Algunas características</h4>
+                        <p class="text-sm italic mb-6 leading-relaxed pb-4">"${m.desc}"</p>
+                        <h4 class="text-amber-500 font-bold uppercase text-[10px] tracking-widest mb-1">Autores de Referencia</h4>
+                        <p class="text-white font-bold mb-6">${m.artists}</p>
+                        <h4 class="text-amber-500 font-bold uppercase text-[10px] tracking-widest mb-2">Claves Formales</h4>
+                        <div class="flex flex-wrap gap-2">
+                            ${m.keys.map(k => `<span class="bg-blue-800 px-2 py-1 rounded text-[10px] tracking-widest border border-blue-500/30">#${k.toUpperCase()}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('info-modal').classList.remove('hidden');
+        }
+
+        function startQuiz() {
+            const shuffledPool = shuffle([...masterQuestions]);
+            gameQuestions = shuffledPool.slice(0, 10);
+            currentQuestionIdx = 0;
+            score = 0;
+            lives = 3;
+            jokerUsed = false;
+            updateLives();
+            document.getElementById('quiz-intro').classList.add('hidden');
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('joker-50').disabled = false;
+            document.getElementById('joker-50').classList.remove('opacity-30');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            canAnswer = true;
+            const qData = gameQuestions[currentQuestionIdx];
+            document.getElementById('question-count').innerText = `Pregunta ${currentQuestionIdx + 1}/10`;
+            document.getElementById('question-text').innerText = qData.q;
+            document.getElementById('feedback-msg').classList.add('hidden');
+            const options = qData.o.map((text, index) => ({ text, isCorrect: index === qData.a }));
+            shuffle(options);
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            options.forEach((opt) => {
+                const btn = document.createElement('button');
+                btn.className = "option-btn w-full text-left p-5 rounded-xl font-bold text-white shadow-lg text-sm";
+                btn.innerText = opt.text;
+                btn.onclick = () => selectOption(opt.isCorrect, btn);
+                grid.appendChild(btn);
+            });
+        }
+
+        function selectOption(isCorrect, btn) {
+            if (!canAnswer) return;
+            canAnswer = false;
+            const msg = document.getElementById('feedback-msg');
+            const buttons = document.querySelectorAll('.option-btn');
+            const correctText = gameQuestions[currentQuestionIdx].o[gameQuestions[currentQuestionIdx].a];
+            if (isCorrect) {
+                score++;
+                gainXP(200);
+                btn.classList.add('correct');
+                msg.innerText = "¡CORRECTO! +200 XP";
+                msg.className = "mt-8 text-2xl font-black text-green-400 animate-pop";
+            } else {
+                lives--;
+                updateLives();
+                btn.classList.add('incorrect');
+                buttons.forEach(b => {
+                    if (b.innerText === correctText) b.classList.add('correct');
+                });
+                msg.innerText = "¡ANÁLISIS INCORRECTO!";
+                msg.className = "mt-8 text-2xl font-black text-red-500 animate-pop";
+            }
+            msg.classList.remove('hidden');
+            setTimeout(() => {
+                if (lives <= 0) return finishGame("¡DESAFÍO FALLIDO!");
+                currentQuestionIdx++;
+                if (currentQuestionIdx < 10) loadQuestion();
+                else finishGame("¡MAESTRÍA CULTURAL!");
+            }, 2000);
+        }
+
+        function useJoker50() {
+            if (jokerUsed) return;
+            const buttons = Array.from(document.querySelectorAll('.option-btn'));
+            const qData = gameQuestions[currentQuestionIdx];
+            const correctText = qData.o[qData.a];
+            let incorrects = buttons.filter(b => b.innerText !== correctText);
+            shuffle(incorrects);
+            incorrects.slice(0, 2).forEach(b => b.style.visibility = 'hidden');
+            jokerUsed = true;
+            document.getElementById('joker-50').disabled = true;
+            document.getElementById('joker-50').classList.add('opacity-30');
+        }
+
+        function finishGame(title) {
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            document.getElementById('result-title').innerText = title;
+            document.getElementById('result-text').innerText = `Has completado el análisis con un resultado de ${score}/10.`;
+        }
+
+        function gainXP(v) { currentXP += v; document.getElementById('xp-counter').innerText = `${currentXP} Puntos`; }
+        function updateLives() { document.getElementById('lives-container').innerHTML = '❤️'.repeat(lives) + '🖤'.repeat(3 - lives); }
+        function closeModal() { document.getElementById('info-modal').classList.add('hidden'); }
+        function changeView(v) { 
+            document.getElementById('explore-view').classList.add('hidden'); 
+            document.getElementById('quiz-view').classList.add('hidden');
+            document.getElementById(v + '-view').classList.remove('hidden');
+        }
+
+        renderMovements();
+    </script>
+</body>
+</html>
