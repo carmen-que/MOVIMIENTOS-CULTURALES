@@ -135,11 +135,11 @@
             <div class="glass-card tv-border p-8 rounded-3xl text-center relative overflow-hidden">
                 <div id="quiz-intro">
                     <h2 class="text-5xl font-brand mb-6 text-amber-400 uppercase italic">Gran Concurso Cultural</h2>
-                    <p class="text-xl mb-8 text-blue-100 font-bold">El concurso oficial de la asignatura</p>
+                    <p class="text-xl mb-8 text-blue-100 font-bold">Banco de preguntas aleatorio</p>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                         <div class="bg-blue-900/50 p-4 rounded-xl border border-blue-400/30">
                             <span class="block text-3xl">🔄</span>
-                            <span class="font-bold uppercase text-[10px] tracking-widest">Temario Aleatorio</span>
+                            <span class="font-bold uppercase text-[10px] tracking-widest">48 Preguntas posibles</span>
                         </div>
                         <div class="bg-blue-900/50 p-4 rounded-xl border border-blue-400/30">
                             <span class="block text-3xl">❤️</span>
@@ -164,7 +164,7 @@
                         </div>
                     </div>
 
-                    <div id="expert-message" class="hidden mb-4 bg-emerald-900/80 border border-emerald-400 p-4 rounded-xl text-emerald-100 text-sm italic animate-pop">
+                    <div id="expert-message" class="hidden mb-4 bg-emerald-900/80 border border-emerald-400 p-4 rounded-xl text-emerald-100 text-sm italic animate-pop text-left">
                         <span class="font-black text-emerald-400 uppercase block mb-1">El experto Carmen-Que dice:</span>
                         <p id="expert-hint"></p>
                     </div>
@@ -342,17 +342,79 @@
             }
         ];
 
+        // BANCO DE PREGUNTAS (4 por movimiento = 48 preguntas)
         const masterQuestions = [
-            { q: "¿En qué movimiento la idea es más importante que la obra física?", o: ["Pop Art", "Arte Conceptual", "Minimalismo", "Informalismo"], a: 1, hint: "Este arte 'desmaterializa' el objeto y usa el lenguaje como herramienta principal." },
-            { q: "¿Qué caracteriza al Land Art?", o: ["Pintura en estudio", "Intervención en la naturaleza", "Uso de basura tecnológica", "Fotografía digital"], a: 1, hint: "La Tierra (Earth) es el lienzo, y se suelen usar rocas, arena o el propio paisaje." },
-            { q: "¿Cuál es un autor clave del Arte Cinético?", o: ["Andy Warhol", "Alexander Calder", "Jackson Pollock", "Cindy Sherman"], a: 1, hint: "Es famoso por sus 'Móviles', esculturas que cuelgan y se mueven con el aire." },
-            { q: "¿Qué materiales usa el Arte Povera?", o: ["Oro y diamantes", "Materiales humildes como tierra o trapos", "Solo plásticos", "Pintura al óleo"], a: 1, hint: "Povera significa 'pobre', buscaban materiales del día a día, humildes y naturales." },
-            { q: "¿Quién pintó 'Autumn Rhythm (Number 30)'?", o: ["Mark Rothko", "Jackson Pollock", "Antoni Tàpies", "Victor Vasarely"], a: 1, hint: "Es el máximo representante del 'Dripping' y la Action Painting americana." },
-            { q: "¿Qué movimiento busca la nitidez absoluta para imitar la fotografía?", o: ["Conceptual", "Hiperrealismo", "Op Art", "Acción"], a: 1, hint: "Es tan real que parece una foto; buscan la perfección técnica y la mimesis absoluta." },
-            { q: "¿Qué artista es referente de la Performance o Arte de Acción?", o: ["Donald Judd", "Marina Abramović", "Bridget Riley", "Antonio López"], a: 1, hint: "Conocida como la 'abuela del performance', su obra 'Rhythm 0' es histórica." },
-            { q: "¿Qué técnica usaba Pollock principalmente?", o: ["Veladura", "Dripping", "Grabado", "Escultura de mármol"], a: 1, hint: "Consiste en dejar chorrear la pintura sobre el lienzo colocado en el suelo." },
-            { q: "¿Qué movimiento usa serigrafías de iconos de consumo?", o: ["Conceptual", "Pop Art", "Povera", "Informalismo"], a: 1, hint: "Se inspira en Marilyn Monroe, las latas de sopa y la cultura de masas." },
-            { q: "¿Quién creó 'The Dinner Party' en el arte feminista?", o: ["Guerilla Girls", "Judy Chicago", "Cindy Sherman", "Marina Abramović"], a: 1, hint: "Creó una mesa triangular con 39 servicios para mujeres históricas." }
+            // EAA
+            { q: "¿Qué variante del Expresionismo Abstracto se centra en grandes superficies de color plano?", o: ["Action Painting", "Colour Field", "Dadaísmo", "Pop Art"], a: 1, hint: "Piénsalo como 'Campos de Color'. Mark Rothko es su mayor exponente." },
+            { q: "¿Quién es el artista asociado al 'Dripping' en el Expresionismo Abstracto Americano?", o: ["Jackson Pollock", "Andy Warhol", "Donald Judd", "Antoni Tàpies"], a: 0, hint: "Pintaba con el lienzo en el suelo, dejando chorrear la pintura." },
+            { q: "¿En qué década surge el Expresionismo Abstracto Americano?", o: ["1920", "1940", "1960", "1980"], a: 1, hint: "Surge tras la II Guerra Mundial en Nueva York." },
+            { q: "¿Qué buscaba expresar la 'Action Painting'?", o: ["La belleza del paisaje", "La energía vital y el inconsciente", "La crítica al consumismo", "La perfección técnica"], a: 1, hint: "El acto físico de pintar era el reflejo de la emoción del artista." },
+            
+            // INFORMALISMO
+            { q: "¿Qué elemento es el gran protagonista en las obras del Informalismo?", o: ["La línea pura", "La materia y la textura", "La perspectiva", "El dibujo académico"], a: 1, hint: "Añaden arena, trapos o yeso para dar relieve a la obra." },
+            { q: "¿Quién es el máximo representante del Informalismo en España?", o: ["Salvador Dalí", "Antoni Tàpies", "Antonio López", "Joan Miró"], a: 1, hint: "Famoso por sus cuadros matéricos que parecen muros o paredes." },
+            { q: "¿A qué movimiento pertenece la obra 'Sacco e Rosso' de Alberto Burri?", o: ["Minimalismo", "Informalismo", "Pop Art", "Arte Óptico"], a: 1, hint: "Burri usaba sacos de arpillera quemados y cosidos." },
+            { q: "El Informalismo surge como respuesta europea a...", o: ["El Renacimiento", "La posguerra y el existencialismo", "La revolución digital", "El Barroco"], a: 1, hint: "Refleja el trauma y la angustia de la Europa tras la guerra." },
+
+            // HIPERREALISMO
+            { q: "¿Qué herramienta suele usarse como base en el Hiperrealismo?", o: ["La memoria", "La fotografía", "El sueño", "La improvisación"], a: 1, hint: "Buscan una fidelidad tan alta que necesitan una imagen de referencia exacta." },
+            { q: "¿Cuál es el objetivo principal del Hiperrealismo?", o: ["Deformar la realidad", "Superar la nitidez fotográfica", "Pintar sin mirar", "Usar colores flúor"], a: 1, hint: "Quieren una objetividad total, casi fría, sobre objetos cotidianos." },
+            { q: "¿Quién es el pintor español famoso por sus vistas de Madrid hiperrealistas?", o: ["Antonio López", "Pablo Picasso", "Miquel Barceló", "Velázquez"], a: 0, hint: "Tardó años en pintar 'La Gran Vía' para captar la luz exacta." },
+            { q: "¿Qué caracteriza las superficies hiperrealistas?", o: ["Pinceladas sueltas", "Ausencia de huella del autor (nitidez)", "Grandes pegotes de pintura", "Dibujo inacabado"], a: 1, hint: "La superficie es tan lisa y perfecta que no se nota el pincel." },
+
+            // POP ART
+            { q: "¿Qué critica el Pop Art mediante la ironía?", o: ["La naturaleza", "La cultura de masas y el consumo", "El pasado clásico", "La ciencia"], a: 1, hint: "Usa imágenes de publicidad y celebridades." },
+            { q: "¿Quién creó la famosa serie de las latas de Sopa Campbell?", o: ["Jeff Koons", "Andy Warhol", "Roy Lichtenstein", "Richard Hamilton"], a: 1, hint: "Es el 'papa' del Pop Art." },
+            { q: "¿Qué técnica industrial popularizó el Pop Art para hacer arte?", o: ["Óleo", "Serigrafía", "Talla en piedra", "Fresco"], a: 1, hint: "Permite la reproducción mecánica de la misma imagen muchas veces." },
+            { q: "¿Qué artista contemporánea es famosa por sus puntos (polka dots) y calabazas?", o: ["Judy Chicago", "Yayoi Kusama", "Cindy Sherman", "Marina Abramović"], a: 1, hint: "Su estilo se asocia al Neopop y la psicodelia." },
+
+            // MINIMALISMO
+            { q: "¿Cuál es la frase que mejor define al Minimalismo?", o: ["Más es más", "Lo que ves es lo que ves", "El arte es un sueño", "Pinto lo que siento"], a: 1, hint: "Frank Stella dijo esta frase para explicar que no hay significados ocultos." },
+            { q: "¿Qué tipo de materiales prefieren los minimalistas?", o: ["Mármol y bronce", "Materiales industriales (acero, neón)", "Basura", "Madera tallada"], a: 1, hint: "Buscan materiales que no tengan rastro de la mano del artista." },
+            { q: "¿Qué formas geométricas dominan el Minimalismo?", o: ["Curvas orgánicas", "Formas puras y modulares (cubos)", "Garabatos", "Estrellas"], a: 1, hint: "Usan la repetición de estructuras simples." },
+            { q: "¿Quién es el autor de las estructuras de cajas de acero inoxidable?", o: ["Jackson Pollock", "Donald Judd", "Jeff Koons", "Christo"], a: 1, hint: "Sus obras parecen muebles o estanterías industriales sin función." },
+
+            // ARTE CONCEPTUAL
+            { q: "¿Qué prima en el Arte Conceptual por encima de la estética?", o: ["El color", "La idea o el concepto", "La técnica", "El tamaño"], a: 1, hint: "La obra puede incluso no existir físicamente, solo ser una instrucción." },
+            { q: "¿Qué obra de Kosuth presenta una silla real, una foto y una definición?", o: ["La silla vacía", "Una y tres sillas", "Esto no es una silla", "Silla industrial"], a: 1, hint: "Cuestiona qué es lo que representa mejor el 'concepto' de silla." },
+            { q: "¿A qué se refiere la 'desmaterialización' del arte?", o: ["A que el arte desaparece", "A que la idea importa más que el objeto físico", "A quemar las obras", "A usar materiales invisibles"], a: 1, hint: "El objeto artístico deja de ser el fetiche central." },
+            { q: "¿Quién escribió 'I Will Not Make Any More Boring Art'?", o: ["John Baldessari", "Sol LeWitt", "Marcel Duchamp", "Banksy"], a: 0, hint: "Lo escribió repetidamente como un castigo escolar." },
+
+            // LAND ART
+            { q: "¿Dónde se ubica la obra del Land Art?", o: ["En museos cerrados", "En el paisaje natural", "En vallas publicitarias", "En estudios de pintura"], a: 1, hint: "La obra es indisociable del lugar (site-specific) en la naturaleza." },
+            { q: "¿Qué famosa obra consiste en una espiral de rocas en un lago salado?", o: ["Túneles solares", "Spiral Jetty", "El valle envuelto", "Círculo de piedras"], a: 1, hint: "Obra de Robert Smithson en Utah." },
+            { q: "¿Cuál es un material típico del Land Art?", o: ["Óleo", "Tierra, rocas y arena", "Plástico reciclado", "Hologramas"], a: 1, hint: "Usan lo que el propio terreno les ofrece." },
+            { q: "¿Qué artista es conocida por sus 'Túneles solares' en el desierto?", o: ["Nancy Holt", "Marina Abramović", "Judy Chicago", "Yayoi Kusama"], a: 0, hint: "Son grandes cilindros que alinean el sol en los solsticios." },
+
+            // ARTE POVERA
+            { q: "¿Qué significa 'Povera' en el contexto artístico?", o: ["Pobre", "Puro", "Potente", "Pequeño"], a: 0, hint: "Uso de materiales 'pobres' o cotidianos frente a los nobles." },
+            { q: "¿Qué materiales usa Michelangelo Pistoletto en 'La venus de los trapos'?", o: ["Oro y mármol", "Mármol y ropa usada", "Solo plástico", "Papel periódico"], a: 1, hint: "Contrasta la escultura clásica con una montaña de ropa vieja." },
+            { q: "¿En qué país surge el Arte Povera?", o: ["EE.UU.", "Italia", "Francia", "España"], a: 1, hint: "Surge en ciudades como Turín y Roma a finales de los 60." },
+            { q: "¿Qué artista del Arte Povera es famoso por sus 'iglús'?", o: ["Mario Merz", "Donald Judd", "Andy Warhol", "Richard Estes"], a: 0, hint: "Merz usaba estructuras semiesféricas con materiales variados." },
+
+            // ARTE ÓPTICO (OP ART)
+            { q: "¿Qué efecto busca causar el Op Art en el espectador?", o: ["Tristeza", "Ilusión de movimiento o vibración", "Sueño", "Hambre"], a: 1, hint: "Usa contrastes y geometría para engañar al ojo." },
+            { q: "¿Qué artista es la figura central del Op Art británico?", o: ["Bridget Riley", "Cindy Sherman", "Lee Krasner", "Judy Chicago"], a: 0, hint: "Famosa por sus cuadros de líneas blancas y negras que marean al mirar." },
+            { q: "¿Qué obra de Vasarely utiliza el contraste blanco y negro para crear formas animales?", o: ["Leones", "Zebra", "El gato", "Pájaros"], a: 1, hint: "Es de 1937 y se considera precursora del Op Art." },
+            { q: "El Op Art se basa principalmente en fenómenos...", o: ["Psicológicos", "Retinianos (del ojo)", "Químicos", "Sociales"], a: 1, hint: "Activa la retina de forma física mediante el contraste." },
+
+            // ARTE CINÉTICO
+            { q: "¿Qué diferencia al Arte Cinético del Óptico?", o: ["No hay diferencia", "El cinético tiene movimiento real o físico", "El cinético no usa colores", "El cinético es solo digital"], a: 1, hint: "En el cinético, la obra se mueve de verdad (por motor o aire)." },
+            { q: "¿Quién inventó los 'Móviles'?", o: ["Pablo Picasso", "Alexander Calder", "Jesús Rafael Soto", "Marcel Duchamp"], a: 1, hint: "Esculturas abstractas que cuelgan y giran." },
+            { q: "¿Qué artista creó las 'Penetrables', donde el público camina entre hilos?", o: ["Andy Warhol", "Jesús Rafael Soto", "Donald Judd", "Richard Estes"], a: 1, hint: "Buscaba la interacción total del cuerpo con la obra." },
+            { q: "¿Qué elemento es fundamental en el Arte Cinético?", o: ["El silencio", "El tiempo y el movimiento", "La pintura al óleo", "El marco dorado"], a: 1, hint: "La obra cambia a medida que pasa el tiempo o el espectador se mueve." },
+
+            // ARTE FEMINISTA
+            { q: "¿Qué reivindica el Arte Feminista?", o: ["La vuelta al realismo", "La visibilidad de la mujer y sus problemáticas", "Pintar solo flores", "El fin de la escultura"], a: 1, hint: "Cuestiona el canon patriarcal de la historia del arte." },
+            { q: "¿Qué obra monumental de Judy Chicago homenajea a mujeres históricas?", o: ["The Dinner Party", "La última cena", "Mujeres en el tiempo", "El banquete"], a: 0, hint: "Una mesa triangular con 39 servicios personalizados." },
+            { q: "¿Qué fotógrafa se retrata a sí misma en diferentes roles de cine (Untitled Film Stills)?", o: ["Cindy Sherman", "Nan Goldin", "Barbara Kruger", "Annie Leibovitz"], a: 0, hint: "Cuestiona los estereotipos femeninos en los medios de comunicación." },
+            { q: "¿Qué grupo de artistas usaba máscaras de gorila para denunciar el sexismo?", o: ["The Beatles", "Guerrilla Girls", "Pussy Riot", "Zaj"], a: 1, hint: "Usaban carteles con datos estadísticos sobre la falta de mujeres en museos." },
+
+            // ARTE DE ACCIÓN
+            { q: "¿Cuál es el soporte principal en el Arte de Acción?", o: ["El lienzo", "El cuerpo del artista", "La piedra", "La pantalla"], a: 1, hint: "El cuerpo es la herramienta y el territorio de la obra." },
+            { q: "¿Qué caracteriza al Arte de Acción por encima de todo?", o: ["Su durabilidad", "Su carácter efímero (sucede y termina)", "Su alto precio", "Su realismo"], a: 1, hint: "Lo importante es el acontecimiento en el momento, no el objeto resultante." },
+            { q: "¿Qué artista realizó 'Rhythm 0', dejando que el público usara 72 objetos sobre ella?", o: ["Marina Abramović", "Yoko Ono", "Lee Krasner", "Cindy Sherman"], a: 0, hint: "Puso a prueba los límites de la resistencia física y social." },
+            { q: "¿A qué colectivo de acción pertenecieron artistas como Juan Hidalgo en España?", o: ["Grupo Fluxus", "Grupo Zaj", "Equipo Crónica", "El Paso"], a: 1, hint: "Realizaban 'conciertos' que eran más bien actos performativos." }
         ];
 
         let currentXP = 0;
@@ -424,14 +486,17 @@
         }
 
         function startQuiz() {
+            // Seleccionar 10 preguntas aleatorias del banco total de 48
             const shuffledPool = shuffle([...masterQuestions]);
             gameQuestions = shuffledPool.slice(0, 10);
+            
             currentQuestionIdx = 0;
             score = 0;
             lives = 3;
             joker50Used = false;
             jokerExpertUsed = false;
             updateLives();
+            
             document.getElementById('quiz-intro').classList.add('hidden');
             document.getElementById('quiz-result').classList.add('hidden');
             document.getElementById('quiz-container').classList.remove('hidden');
@@ -458,8 +523,10 @@
             document.getElementById('feedback-msg').classList.add('hidden');
             document.getElementById('expert-message').classList.add('hidden');
             
+            // Generar opciones barajadas para que la respuesta correcta no esté siempre en la misma posición interna
             const options = qData.o.map((text, index) => ({ text, isCorrect: index === qData.a }));
             shuffle(options);
+
             const grid = document.getElementById('options-grid');
             grid.innerHTML = '';
             options.forEach((opt) => {
@@ -476,7 +543,11 @@
             canAnswer = false;
             const msg = document.getElementById('feedback-msg');
             const buttons = document.querySelectorAll('.option-btn');
-            const correctText = gameQuestions[currentQuestionIdx].o[gameQuestions[currentQuestionIdx].a];
+            
+            // Buscar cuál era la respuesta correcta para mostrarla si falla
+            const qData = gameQuestions[currentQuestionIdx];
+            const correctText = qData.o[qData.a];
+
             if (isCorrect) {
                 score++;
                 gainXP(200);
@@ -494,6 +565,7 @@
                 msg.className = "mt-8 text-2xl font-brand text-red-500 animate-pop italic";
             }
             msg.classList.remove('hidden');
+            
             setTimeout(() => {
                 if (lives <= 0) return finishGame("¡DESAFÍO FALLIDO!");
                 currentQuestionIdx++;
@@ -507,9 +579,12 @@
             const buttons = Array.from(document.querySelectorAll('.option-btn'));
             const qData = gameQuestions[currentQuestionIdx];
             const correctText = qData.o[qData.a];
+            
             let incorrects = buttons.filter(b => b.innerText !== correctText);
             shuffle(incorrects);
+            // Ocultar dos incorrectas
             incorrects.slice(0, 2).forEach(b => b.style.visibility = 'hidden');
+            
             joker50Used = true;
             document.getElementById('joker-50').disabled = true;
             document.getElementById('joker-50').classList.add('opacity-30', 'grayscale');
@@ -520,6 +595,7 @@
             const qData = gameQuestions[currentQuestionIdx];
             document.getElementById('expert-hint').innerText = qData.hint || "Fíjate bien en el contexto histórico del movimiento y sus claves formales.";
             document.getElementById('expert-message').classList.remove('hidden');
+            
             jokerExpertUsed = true;
             document.getElementById('joker-expert').disabled = true;
             document.getElementById('joker-expert').classList.add('opacity-30', 'grayscale');
@@ -529,18 +605,29 @@
             document.getElementById('quiz-container').classList.add('hidden');
             document.getElementById('quiz-result').classList.remove('hidden');
             document.getElementById('result-title').innerText = title;
-            document.getElementById('result-text').innerText = `Has completado el análisis con un resultado de ${score}/10.`;
+            document.getElementById('result-text').innerText = `Has completado el análisis con un resultado de ${score}/10. Puntos acumulados en esta sesión: ${score * 200}`;
         }
 
-        function gainXP(v) { currentXP += v; document.getElementById('xp-counter').innerText = `${currentXP} Puntos`; }
-        function updateLives() { document.getElementById('lives-container').innerHTML = '❤️'.repeat(lives) + '🖤'.repeat(3 - lives); }
-        function closeModal() { document.getElementById('info-modal').classList.add('hidden'); }
+        function gainXP(v) { 
+            currentXP += v; 
+            document.getElementById('xp-counter').innerText = `${currentXP} Puntos`; 
+        }
+
+        function updateLives() { 
+            document.getElementById('lives-container').innerHTML = '❤️'.repeat(lives) + '🖤'.repeat(3 - lives); 
+        }
+
+        function closeModal() { 
+            document.getElementById('info-modal').classList.add('hidden'); 
+        }
+
         function changeView(v) { 
             document.getElementById('explore-view').classList.add('hidden'); 
             document.getElementById('quiz-view').classList.add('hidden');
             document.getElementById(v + '-view').classList.remove('hidden');
         }
 
+        // Inicialización
         renderMovements();
     </script>
 </body>
